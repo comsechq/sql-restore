@@ -18,3 +18,8 @@ already exist.
   if duplicates exist.
 * Add option to not overwrite existing databases
 
+####Download:
+
+Get the precompiled [version 0.1 here] [1].
+
+[1]: https://github.com/downloads/comsechq/sql-restore/sqlrest.zip
