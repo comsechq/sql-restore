@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using dbBackupRestore.Domain;
+using Comsec.SqlRestore.Domain;
 
-namespace dbBackupRestore.Interfaces
+namespace Comsec.SqlRestore.Interfaces
 {
     /// <summary>
     /// Service for manipulating <see cref="BackupFile"/> objects.

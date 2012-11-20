@@ -1,4 +1,4 @@
-﻿namespace dbBackupRestore.Domain
+﻿namespace Comsec.SqlRestore.Domain
 {
     /// <summary>
     /// A single database file list entry

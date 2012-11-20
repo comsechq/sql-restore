@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace dbBackupRestore.Domain
+namespace Comsec.SqlRestore.Domain
 {
     /// <summary>
     /// Represents a single database backup file to be restored

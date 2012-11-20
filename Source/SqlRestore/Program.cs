@@ -1,9 +1,6 @@
-﻿using Sugar.Command;
-using dbBackupRestore.Commands;
-using dbBackupRestore.Core;
-using dbBackupRestore.Domain;
+﻿using Comsec.SqlRestore.Commands;
 
-namespace dbBackupRestore
+namespace Comsec.SqlRestore
 {
     public static class BackupRestore
     {

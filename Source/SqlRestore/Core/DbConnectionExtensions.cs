@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
+using Comsec.SqlRestore.Domain;
 using Sugar.Data;
-using dbBackupRestore.Domain;
 
-namespace dbBackupRestore.Core
+namespace Comsec.SqlRestore.Core
 {
     public static class DbConnectionExtensions
     {

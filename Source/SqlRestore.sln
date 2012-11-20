@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dbBackupRestore", "dbBackupRestore\dbBackupRestore.csproj", "{28A5A7CA-ADF3-410F-8018-9F35E46DAB87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRestore", "SqlRestore\SqlRestore.csproj", "{28A5A7CA-ADF3-410F-8018-9F35E46DAB87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dbBackupRestore.Test", "dbBackupRestore.Test\dbBackupRestore.Test.csproj", "{24822DE0-3C98-466F-BBED-A7E22722F59B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRestore.Test", "SqlRestore.Test\SqlRestore.Test.csproj", "{24822DE0-3C98-466F-BBED-A7E22722F59B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,8 +7,8 @@
     <ProjectGuid>{24822DE0-3C98-466F-BBED-A7E22722F59B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dbBackupRestore.Test</RootNamespace>
-    <AssemblyName>dbBackupRestore.Test</AssemblyName>
+    <RootNamespace>Comsec.SqlRestore</RootNamespace>
+    <AssemblyName>SqlRestore.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,7 +54,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dbBackupRestore\dbBackupRestore.csproj">
+    <ProjectReference Include="..\SqlRestore\SqlRestore.csproj">
       <Project>{28A5A7CA-ADF3-410F-8018-9F35E46DAB87}</Project>
       <Name>dbBackupRestore</Name>
     </ProjectReference>

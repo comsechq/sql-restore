@@ -7,10 +7,11 @@
     <ProjectGuid>{28A5A7CA-ADF3-410F-8018-9F35E46DAB87}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dbBackupRestore</RootNamespace>
-    <AssemblyName>dbBackupRestore</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Comsec.SqlRestore</RootNamespace>
+    <AssemblyName>sqlrest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,11 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackupRestore.cs" />
     <Compile Include="BackupRestoreConsole.cs" />
     <Compile Include="Commands\RestoreCommand.cs" />
     <Compile Include="Core\DbConnectionExtensions.cs" />
-    <Compile Include="Core\Stencil.cs" />
     <Compile Include="Domain\FileListEntry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Domain\BackupFile.cs" />

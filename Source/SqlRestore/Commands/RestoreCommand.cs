@@ -1,8 +1,9 @@
-﻿using Sugar.Command;
-using dbBackupRestore.Interfaces;
-using dbBackupRestore.Services;
+﻿using System;
+using Comsec.SqlRestore.Interfaces;
+using Comsec.SqlRestore.Services;
+using Sugar.Command;
 
-namespace dbBackupRestore.Commands
+namespace Comsec.SqlRestore.Commands
 {
     /// <summary>
     /// Restores a directory to a server
@@ -27,17 +28,17 @@ namespace dbBackupRestore.Commands
             /// <value>
             /// The directory.
             /// </value>
-            [Parameter("dir")]
-            public string Directory { get; set; }
+            [Parameter("src")]
+            public string SourceDirectory { get; set; }
 
             /// <summary>
-            /// Gets or sets the db file path.
+            /// Gets or sets the destination directory.
             /// </summary>
             /// <value>
             /// The db file path.
             /// </value>
-            [Parameter("dbpath")]
-            public string DbFilePath { get; set; }
+            [Parameter("dest")]
+            public string DestinationDirectory { get; set; }
         }
         
         #region Dependencies
@@ -60,6 +61,9 @@ namespace dbBackupRestore.Commands
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RestoreCommand" /> class.
+        /// </summary>
         public RestoreCommand()
         {
             BackupFileService = new BackupFileService();
@@ -72,13 +76,17 @@ namespace dbBackupRestore.Commands
         /// <param name="options">The options.</param>
         public override void Execute(Options options)
         {
-            var files = BackupFileService.ParseDirectory(options.Directory);
+            var files = BackupFileService.ParseDirectory(options.SourceDirectory);
+
             files = BackupFileService.RemoveDuplicatesByDate(files);
             files = BackupFileService.RemoveDuplicatesBySize(files);
+            
             foreach (var file in files)
             {
+                Console.WriteLine("Restoring Database: " + file.DatabaseName);
+
                 file.FileList = SqlService.GetLogicalNames(options.Server, file);
-                SqlService.Restore(options.Server, file, options.DbFilePath);
+                SqlService.Restore(options.Server, file, options.DestinationDirectory);
             }
         }
     }

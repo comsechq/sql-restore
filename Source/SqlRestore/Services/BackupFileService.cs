@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using dbBackupRestore.Domain;
-using dbBackupRestore.Interfaces;
+using Comsec.SqlRestore.Domain;
+using Comsec.SqlRestore.Interfaces;
 
-namespace dbBackupRestore.Services
+namespace Comsec.SqlRestore.Services
 {
+    /// <summary>
+    /// Service to manipulate SQL server backup files
+    /// </summary>
     public class BackupFileService : IBackupFileService
     {
+        /// <summary>
+        /// Parses the directory and returns all the database backups inside.
+        /// </summary>
+        /// <param name="directory">The directory.</param>
+        /// <returns></returns>
         public IList<BackupFile> ParseDirectory(string directory)
         {
             var backupFileList = new List<BackupFile>();
@@ -35,6 +42,11 @@ namespace dbBackupRestore.Services
             return backupFileList;
         }
 
+        /// <summary>
+        /// Returns a list of backup files, removing the smallest versions of each database
+        /// </summary>
+        /// <param name="files">The files.</param>
+        /// <returns></returns>
         public IList<BackupFile> RemoveDuplicatesBySize(IList<BackupFile> files)
         {
             var results = new List<BackupFile>();
@@ -52,6 +64,11 @@ namespace dbBackupRestore.Services
             return results;
         }
 
+        /// <summary>
+        /// Removes the duplicates by date.
+        /// </summary>
+        /// <param name="files">The files.</param>
+        /// <returns></returns>
         public IList<BackupFile> RemoveDuplicatesByDate(IList<BackupFile> files)
         {
             var results = new List<BackupFile>();
@@ -67,15 +84,6 @@ namespace dbBackupRestore.Services
             }
 
             return results;
-        }
-
-        private static void ReplaceBackupData(Dictionary<string, DateTime> backupsToRestore, string dbName, Dictionary<string, string> backupPaths, 
-                                                FileInfo fi, string file)
-        {
-            backupsToRestore.Remove(dbName);
-            backupPaths.Remove(dbName);
-            backupsToRestore.Add(dbName, fi.CreationTime);
-            backupPaths.Add(dbName, file);
         }
     }
 }
