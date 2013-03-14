@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -37,12 +38,19 @@ namespace Comsec.SqlRestore.Core
             if (!connection.DatabaseExists(backupFile.DatabaseName))
             {
                 string sql = @"RESTORE DATABASE [{0}] FROM DISK = '{1}' WITH REPLACE";
-                const string moveFormat = @", MOVE '{0}' TO '{1}.MDF'";
+                const string moveFormat = @", MOVE '{0}' TO '{1}'";
 
                 foreach (var fileListEntry in backupFile.FileList)
                 {
-                    var fileName = Path.GetFileName(fileListEntry.PhysicalName);
-                    var fullFileName = Path.Combine(restorePath, fileName);
+                    var fileName = Path.GetFileName(fileListEntry.PhysicalName) ?? string.Empty;
+                    var fullFileName = Path.Combine(restorePath, fileName).ToLower();
+
+                    // Add extension if required
+                    if (!fullFileName.EndsWith(".mdf") &&
+                        !fullFileName.EndsWith(".ldf"))
+                    {
+                        fullFileName += ".mdf";
+                    }
 
                     sql += string.Format(moveFormat, fileListEntry.LogicalName, fullFileName);
                 }

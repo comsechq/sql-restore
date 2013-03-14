@@ -10,7 +10,7 @@ namespace Comsec.SqlRestore.Commands
     /// </summary>
     public class RestoreCommand : BoundCommand<RestoreCommand.Options>
     {
-        [Flag("server", "dir")]
+        [Flag("server", "src", "dest")]
         public class Options
         {
             /// <summary>
