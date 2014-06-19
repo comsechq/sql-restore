@@ -28,14 +28,14 @@ namespace Comsec.SqlRestore.Services
                 var dbName = fi.Name.Substring(0, l);
 
                 var item = new BackupFile
-                {
-                    Created = fi.CreationTime,
-                    DatabaseName = dbName,
-                    FileName = fi.FullName,
-                    Length = fi.Length
-                };
+                           {
+                               Created = fi.CreationTime,
+                               DatabaseName = dbName,
+                               FileName = fi.FullName,
+                               Length = fi.Length
+                           };
+
                 backupFileList.Add(item);
-               
             }
             
 

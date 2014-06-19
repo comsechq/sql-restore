@@ -20,5 +20,13 @@
         /// The name of the physical.
         /// </value>
         public string PhysicalName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type ("D" for data (MDF) file, "L" for log (LDF) file).
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public string Type { get; set; }
     }
 }

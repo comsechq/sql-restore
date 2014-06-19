@@ -38,7 +38,16 @@ namespace Comsec.SqlRestore.Commands
             /// The db file path.
             /// </value>
             [Parameter("dest")]
-            public string DestinationDirectory { get; set; }
+            public string DataFilesDestinationDirectory { get; set; }
+
+            /// <summary>
+            /// Gets or sets the log files destination directory.
+            /// </summary>
+            /// <value>
+            /// The log files destination directory.
+            /// </value>
+            [Parameter("log-dest", Required = false)]
+            public string LogFilesDestinationDirectory { get; set; }
         }
         
         #region Dependencies
@@ -86,7 +95,7 @@ namespace Comsec.SqlRestore.Commands
                 Console.WriteLine("Restoring Database: " + file.DatabaseName);
 
                 file.FileList = SqlService.GetLogicalNames(options.Server, file);
-                SqlService.Restore(options.Server, file, options.DestinationDirectory);
+                SqlService.Restore(options.Server, file, options.DataFilesDestinationDirectory, options.LogFilesDestinationDirectory);
             }
         }
     }

@@ -17,8 +17,9 @@ namespace Comsec.SqlRestore.Services
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="backupFile">The backup file.</param>
-        /// <param name="dbFilePath">The path to restore physical files to</param>
-        public void Restore(string server, BackupFile backupFile, string dbFilePath)
+        /// <param name="dataFilesPath">The path to restore physical files to</param>
+        /// <param name="logFilesPath">The LDF file path.</param>
+        public void Restore(string server, BackupFile backupFile, string dataFilesPath, string logFilesPath = null)
         {
             const string connectionStringFormat = @"Data Source={0};Integrated Security=SSPI;Initial Catalog=master;";
 
@@ -28,8 +29,7 @@ namespace Comsec.SqlRestore.Services
             {
                 connection.Open();
 
-                connection.RestoreDatabase(backupFile, dbFilePath, true);
-               
+                connection.RestoreDatabase(backupFile, dataFilesPath, logFilesPath, true);
             }
         }
 

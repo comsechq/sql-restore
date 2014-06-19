@@ -14,8 +14,9 @@ namespace Comsec.SqlRestore.Interfaces
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="backupFile">The backup file.</param>
-        /// <param name="dbFilePath">The path to restore physical files to </param>
-        void Restore(string server, BackupFile backupFile, string dbFilePath);
+        /// <param name="dataFilesPath">The path to restore data files to</param>
+        /// <param name="logFilesPath">The path to restore log files to (optional: defaults to <see cref="dataFilesPath"/> when not set).</param>
+        void Restore(string server, BackupFile backupFile, string dataFilesPath, string logFilesPath = null);
 
         /// <summary>
         /// Gets the logical names from the backup file
