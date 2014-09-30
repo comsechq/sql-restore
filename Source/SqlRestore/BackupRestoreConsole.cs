@@ -13,7 +13,7 @@ namespace Comsec.SqlRestore
         /// <summary>
         /// Displays the help message
         /// </summary>
-        public override void Default()
+        public override int Default()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -33,6 +33,8 @@ namespace Comsec.SqlRestore
             Console.WriteLine("    dest:   The destination directory to restore the backup files to");
             Console.WriteLine("    dest:   The destination directory to restore the data (.mdf) files to");
             Console.WriteLine("log-dest:   The destination directory to restore the log (.ldf) files to (optional: defaults to dest)");
+
+            return (int) ExitCode.NoCommand;
         }
     }
 }

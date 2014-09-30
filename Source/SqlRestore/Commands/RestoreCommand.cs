@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Comsec.SqlRestore.Interfaces;
 using Comsec.SqlRestore.Services;
 using Sugar.Command;
@@ -83,7 +84,7 @@ namespace Comsec.SqlRestore.Commands
         /// Executes the command and restores the given directory onto the SQL server
         /// </summary>
         /// <param name="options">The options.</param>
-        public override void Execute(Options options)
+        public override int Execute(Options options)
         {
             var files = BackupFileService.ParseDirectory(options.SourceDirectory);
 
@@ -94,9 +95,13 @@ namespace Comsec.SqlRestore.Commands
             {
                 Console.WriteLine("Restoring Database: " + file.DatabaseName);
 
-                file.FileList = SqlService.GetLogicalNames(options.Server, file);
+                file.FileList = SqlService.GetLogicalNames(options.Server, file)
+                                          .ToList();
+                
                 SqlService.Restore(options.Server, file, options.DataFilesDestinationDirectory, options.LogFilesDestinationDirectory);
             }
+
+            return (int) ExitCode.Success;
         }
     }
 }

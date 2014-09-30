@@ -24,6 +24,6 @@ namespace Comsec.SqlRestore.Interfaces
         /// <param name="server">The server. </param>
         /// <param name="backupFile">The backup file.</param>
         /// <returns></returns>
-        List<FileListEntry> GetLogicalNames(string server, BackupFile backupFile);
+        IEnumerable<FileListEntry> GetLogicalNames(string server, BackupFile backupFile);
     }
 }
