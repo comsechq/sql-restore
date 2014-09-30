@@ -90,18 +90,32 @@ namespace Comsec.SqlRestore.Commands
 
             files = BackupFileService.RemoveDuplicatesByDate(files);
             files = BackupFileService.RemoveDuplicatesBySize(files);
-            
+
+            var success = true;
+
             foreach (var file in files)
             {
                 Console.WriteLine("Restoring Database: " + file.DatabaseName);
 
                 file.FileList = SqlService.GetLogicalNames(options.Server, file)
                                           .ToList();
-                
-                SqlService.Restore(options.Server, file, options.DataFilesDestinationDirectory, options.LogFilesDestinationDirectory);
+
+                try
+                {
+                    SqlService.Restore(options.Server, file, options.DataFilesDestinationDirectory, options.LogFilesDestinationDirectory);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    // Don't bomb out when a SQL exception is thrown, move on to the next file
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                    success = false;
+                }
             }
 
-            return (int) ExitCode.Success;
+            return success
+                ? (int) ExitCode.Success
+                : (int) ExitCode.GeneralError;
         }
     }
 }
