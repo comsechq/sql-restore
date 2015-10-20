@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Comsec.SqlRestore.Domain;
@@ -24,7 +25,7 @@ namespace Comsec.SqlRestore.Services
             foreach (var file in filePaths)
             {
                 var fi = new FileInfo(file);
-                var l = fi.Name.IndexOf("_backup");
+                var l = fi.Name.IndexOf("_backup", StringComparison.Ordinal);
                 var dbName = fi.Name.Substring(0, l);
 
                 var item = new BackupFile

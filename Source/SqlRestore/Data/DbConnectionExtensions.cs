@@ -32,7 +32,7 @@ namespace Comsec.SqlRestore.Data
         /// <param name="name">The name.</param>
         public static void DropDatabase(this IDbConnection connection, string name)
         {
-            var sql = string.Format(@"ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{0}];", name);
+            var sql = string.Format("ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{0}];", name);
 
             connection.Execute(sql);
         }

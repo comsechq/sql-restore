@@ -81,9 +81,7 @@ namespace Comsec.SqlRestore.Services
         /// <param name="logFilesPath">The LDF file path.</param>
         public void Restore(string server, BackupFile backupFile, string dataFilesPath, string logFilesPath = null)
         {
-            const string connectionStringFormat = @"Data Source={0};Integrated Security=SSPI;Initial Catalog=master;";
-
-            var connectionString = string.Format(connectionStringFormat, server);
+            var connectionString = $"Data Source={server};Integrated Security=SSPI;Initial Catalog=master;";
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -109,13 +107,11 @@ namespace Comsec.SqlRestore.Services
         /// <returns></returns>
         public IEnumerable<FileListEntry> GetLogicalNames(string server, BackupFile backupFile)
         {
-            const string connectionStringFormat = @"Data Source={0};Integrated Security=SSPI;Initial Catalog=master;";
-
-            var connectionString = string.Format(connectionStringFormat, server);
+            var connectionString = $@"Data Source={server};Integrated Security=SSPI;Initial Catalog=master;";
 
             using (var connection = new SqlConnection(connectionString))
             {
-                var sql = string.Format(@"RESTORE FILELISTONLY FROM DISK = '{0}'", backupFile.FileName);
+                var sql = $@"RESTORE FILELISTONLY FROM DISK = '{backupFile.FileName}'";
 
                 return connection.Query<FileListEntry>(sql);
             }
