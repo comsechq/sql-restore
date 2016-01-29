@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using Comsec.SqlRestore.Commands;
 using Sugar.Command;
 
 namespace Comsec.SqlRestore
@@ -8,12 +9,40 @@ namespace Comsec.SqlRestore
     /// <summary>
     /// Main Command Console
     /// </summary>
-    public class BackupRestoreConsole : BaseCommandConsole
+    public class BackupRestoreConsole : BaseConsole
     {
+        /// <summary>
+        /// Entry point for the program logic
+        /// </summary>
+        protected override int Main()
+        {
+            var exitCode = Arguments.Count > 0 ? Run(typeof(RestoreCommand), Arguments) : Default();
+
+            return exitCode;
+        }
+
+        /// <summary>
+        /// Runs the specified parameters.
+        /// </summary>
+        /// <param name="commandType">Type of the command.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public int Run(Type commandType, Parameters parameters)
+        {
+            // Assign current parameters
+            Parameters.SetCurrent(parameters.ToString());
+
+            var command = (ICommand)Activator.CreateInstance(commandType);
+
+            command.BindParameters(parameters);
+
+            return command.Execute();
+        }
+
         /// <summary>
         /// Displays the help message
         /// </summary>
-        public override int Default()
+        public int Default()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);

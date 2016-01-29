@@ -39,9 +39,9 @@
     <Reference Include="Dapper">
       <HintPath>..\packages\Dapper.1.35\lib\net45\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="Sugar, Version=1.0.0.25179, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Sugar.2014.09.29.1359\lib\net45\Sugar.dll</HintPath>
+    <Reference Include="Sugar, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\comsec.sugar.1.0.15.0\lib\net45\Sugar.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
