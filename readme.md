@@ -1,9 +1,9 @@
-##SQL Restore Utility
+## SQL Restore Utility
 
 A simple utility to restore a directoy of backup files to a MS SQL Server.  Existing databases are dropped if they 
 already exist.
 
-####Usage:
+#### Usage:
 
     sqlrest.exe -server [server] -src [source] -dest [destination]
 
@@ -12,17 +12,17 @@ already exist.
  * __dest__ The destination directory to restore the data (.mdf) files to
  * __log-dest__ The destination directory to restore the log (.ldf) files to (optional: defaults to __dest__)
 
-####Todo:
+#### Todo:
 
 * Add support for non-trusted connections
 * Add options for file de-duplication checks (via timestamp, size).  Currently, the latest, largest file is chosen  if duplicates exist.
 * Add option to not overwrite existing databases
 
-####Download:
+#### Download:
 
 Checkout the [latest releases](https://github.com/comsechq/sql-restore/releases).
 
-####License
+#### License
 
 This project is licensed under the terms of the [MIT license](https://github.com/comsechq/sql-prune/blob/master/LICENSE.txt). 
 
