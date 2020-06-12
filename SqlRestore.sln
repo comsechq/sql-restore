@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRestore.Test", "SqlResto
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{93D66A13-8C34-4490-AE8F-904FC002D867}"
 	ProjectSection(SolutionItems) = preProject
-		..\readme.md = ..\readme.md
+		.\readme.md = .\readme.md
 	EndProjectSection
 EndProject
 Global

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Comsec.SqlRestore.Commands;
 using Sugar.Command;
+using Sugar.Command.Binder;
 
 namespace Comsec.SqlRestore
 {
@@ -29,10 +30,7 @@ namespace Comsec.SqlRestore
         /// <returns></returns>
         public int Run(Type commandType, Parameters parameters)
         {
-            // Assign current parameters
-            Parameters.SetCurrent(parameters.ToString());
-
-            var command = (ICommand)Activator.CreateInstance(commandType);
+            var command = (ICommand) Activator.CreateInstance(commandType);
 
             command.BindParameters(parameters);
 

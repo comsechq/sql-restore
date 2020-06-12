@@ -3,6 +3,7 @@ using System.Linq;
 using Comsec.SqlRestore.Interfaces;
 using Comsec.SqlRestore.Services;
 using Sugar.Command;
+using Sugar.Command.Binder;
 
 namespace Comsec.SqlRestore.Commands
 {
@@ -20,7 +21,7 @@ namespace Comsec.SqlRestore.Commands
             /// <value>
             /// The server.
             /// </value>
-            [Parameter("server")]
+            [Parameter("server", Required = true)]
             public string Server { get; set; }
 
             /// <summary>
@@ -29,7 +30,7 @@ namespace Comsec.SqlRestore.Commands
             /// <value>
             /// The directory.
             /// </value>
-            [Parameter("src")]
+            [Parameter("src", Required = true)]
             public string SourceDirectory { get; set; }
 
             /// <summary>
@@ -38,7 +39,7 @@ namespace Comsec.SqlRestore.Commands
             /// <value>
             /// The db file path.
             /// </value>
-            [Parameter("dest")]
+            [Parameter("dest", Required = true)]
             public string DataFilesDestinationDirectory { get; set; }
 
             /// <summary>

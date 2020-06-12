@@ -1,7 +1,7 @@
 ## SQL Restore Utility
 
-A simple utility to restore a directoy of backup files to a MS SQL Server.  Existing databases are dropped if they 
-already exist.
+A command line utility to restore a directoy of backup files to a MS SQL Server. 
+Existing databases are dropped if they already exist.
 
 #### Usage:
 
