@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Comsec.SqlRestore.Domain;
 using NUnit.Framework;
 
@@ -34,7 +35,9 @@ namespace Comsec.SqlRestore.Services
                            Length = 100000
                        };
 
-            var query = SqlService.GenerateRestoreSql(file, @"D:\SQL\");
+            var query = SqlService.GenerateRestoreSql(
+                file,
+                new DirectoryInfo(@"D:\SQL\"));
 
             Assert.AreEqual(@"RESTORE DATABASE [comsec]
 FROM DISK = 'comsec_backup_2014_06_19_010004_7953268' WITH REPLACE,
@@ -68,7 +71,10 @@ MOVE 'comsec_log' TO 'd:\sql\comsec_log.ldf'", query);
                            Length = 100000
                        };
 
-            var query = SqlService.GenerateRestoreSql(file, @"D:\SQL\", @"L:\SQL\");
+            var query = SqlService.GenerateRestoreSql(
+                file,
+                new DirectoryInfo(@"D:\SQL\"),
+                new DirectoryInfo(@"L:\SQL\"));
 
             Assert.AreEqual(@"RESTORE DATABASE [comsec]
 FROM DISK = 'comsec_backup_2014_06_19_010004_7953268' WITH REPLACE,

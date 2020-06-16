@@ -1,122 +1,75 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
-using Comsec.SqlRestore.Interfaces;
 using Comsec.SqlRestore.Services;
-using Sugar.Command;
-using Sugar.Command.Binder;
 
 namespace Comsec.SqlRestore.Commands
 {
     /// <summary>
     /// Restores a directory to a server
     /// </summary>
-    public class RestoreCommand : BoundCommand<RestoreCommand.Options>
+    public class RestoreCommand : ICommand<RestoreCommand.Input>
     {
-        [Flag("server", "src", "dest")]
-        public class Options
-        {
-            /// <summary>
-            /// Gets or sets the server.
-            /// </summary>
-            /// <value>
-            /// The server.
-            /// </value>
-            [Parameter("server", Required = true)]
-            public string Server { get; set; }
-
-            /// <summary>
-            /// Gets or sets the directory.
-            /// </summary>
-            /// <value>
-            /// The directory.
-            /// </value>
-            [Parameter("src", Required = true)]
-            public string SourceDirectory { get; set; }
-
-            /// <summary>
-            /// Gets or sets the destination directory.
-            /// </summary>
-            /// <value>
-            /// The db file path.
-            /// </value>
-            [Parameter("dest", Required = true)]
-            public string DataFilesDestinationDirectory { get; set; }
-
-            /// <summary>
-            /// Gets or sets the log files destination directory.
-            /// </summary>
-            /// <value>
-            /// The log files destination directory.
-            /// </value>
-            [Parameter("log-dest", Required = false)]
-            public string LogFilesDestinationDirectory { get; set; }
-        }
-        
-        #region Dependencies
-
-        /// <summary>
-        /// Gets or sets the backup file service.
-        /// </summary>
-        /// <value>
-        /// The backup file service.
-        /// </value>
-        public IBackupFileService BackupFileService { get; set; }
-
-        /// <summary>
-        /// Gets or sets the SQL service.
-        /// </summary>
-        /// <value>
-        /// The SQL service.
-        /// </value>
-        public ISqlService SqlService { get; set; }
-
-        #endregion
+        private readonly IBackupFileService backupFileService;
+        private readonly ISqlService sqlService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RestoreCommand" /> class.
         /// </summary>
-        public RestoreCommand()
+        public RestoreCommand(IBackupFileService backupFileService, ISqlService sqlService)
         {
-            BackupFileService = new BackupFileService();
-            SqlService = new SqlService();
+            this.backupFileService = backupFileService;
+            this.sqlService = sqlService;
+        }
+
+        public class Input
+        {
+            public Input(string server, DirectoryInfo src, DirectoryInfo mdfPath, DirectoryInfo ldfPath)
+            {
+                Server = server;
+                SourceDirectory = src;
+                MdfRestorePath = mdfPath;
+                LdfRestorePath = ldfPath;
+            }
+
+            public string Server { get; set; }
+
+            public DirectoryInfo SourceDirectory { get; set; }
+
+            public DirectoryInfo MdfRestorePath { get; set; }
+
+            public DirectoryInfo LdfRestorePath { get; set; }
         }
 
         /// <summary>
         /// Executes the command and restores the given directory onto the SQL server
         /// </summary>
-        /// <param name="options">The options.</param>
-        public override int Execute(Options options)
+        /// <param name="input">The options.</param>
+        public void Execute(Input input)
         {
-            var files = BackupFileService.ParseDirectory(options.SourceDirectory);
+            var files = backupFileService.ParseDirectory(input.SourceDirectory);
 
-            files = BackupFileService.RemoveDuplicatesByDate(files);
-            files = BackupFileService.RemoveDuplicatesBySize(files);
-
-            var success = true;
+            files = backupFileService.RemoveDuplicatesByDate(files);
+            files = backupFileService.RemoveDuplicatesBySize(files);
 
             foreach (var file in files)
             {
                 Console.WriteLine("Restoring Database: " + file.DatabaseName);
 
-                file.FileList = SqlService.GetLogicalNames(options.Server, file)
+                file.FileList = sqlService.GetLogicalNames(input.Server, file)
                                           .ToList();
 
                 try
                 {
-                    SqlService.Restore(options.Server, file, options.DataFilesDestinationDirectory, options.LogFilesDestinationDirectory);
+                    sqlService.Restore(input.Server, file, input.MdfRestorePath, input.LdfRestorePath);
                 }
                 catch (System.Data.SqlClient.SqlException ex)
                 {
                     // Don't bomb out when a SQL exception is thrown, move on to the next file
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
-                    success = false;
                 }
             }
-
-            return success
-                ? (int) ExitCode.Success
-                : (int) ExitCode.GeneralError;
         }
     }
 }

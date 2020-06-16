@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Comsec.SqlRestore.Domain;
 
-namespace Comsec.SqlRestore.Interfaces
+namespace Comsec.SqlRestore.Services
 {
     /// <summary>
     /// Service for manipulating <see cref="BackupFile"/> objects.
@@ -13,7 +14,7 @@ namespace Comsec.SqlRestore.Interfaces
         /// </summary>
         /// <param name="directory">The directory.</param>
         /// <returns></returns>
-        IList<BackupFile> ParseDirectory(string directory);
+        IList<BackupFile> ParseDirectory(DirectoryInfo directory);
 
         /// <summary>
         /// Returns a list of backup files, removing the smallest versions of each database

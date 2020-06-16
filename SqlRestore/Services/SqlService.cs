@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using Comsec.SqlRestore.Data;
 using Comsec.SqlRestore.Domain;
-using Comsec.SqlRestore.Interfaces;
 using Dapper;
 
 namespace Comsec.SqlRestore.Services
@@ -22,10 +21,10 @@ namespace Comsec.SqlRestore.Services
         /// <param name="ldfRestorePath">The restore path for LDF (optional, MDF path used when not set).</param>
         /// <returns>A restore database from file SQL statement</returns>
         /// <remarks>This method is public only so that it can be unit tested</remarks>
-        public static string GenerateRestoreSql(BackupFile backupFile, string mdfRestorePath, string ldfRestorePath = null)
+        public static string GenerateRestoreSql(BackupFile backupFile, DirectoryInfo mdfRestorePath, DirectoryInfo ldfRestorePath = null)
         {
             // LDF restore path defaults to the MDF location when not set
-            ldfRestorePath = ldfRestorePath ?? mdfRestorePath;
+            ldfRestorePath ??= new DirectoryInfo(mdfRestorePath.FullName);
 
             var builder = new StringBuilder()
                 .Append("RESTORE DATABASE [").Append(backupFile.DatabaseName).AppendLine("]")
@@ -43,7 +42,7 @@ namespace Comsec.SqlRestore.Services
 
                 if (isDataFile)
                 {
-                    fullFileName = Path.Combine(mdfRestorePath, fileName).ToLower();
+                    fullFileName = Path.Combine(mdfRestorePath.FullName, fileName).ToLower();
 
                     if (!fullFileName.EndsWith(".mdf"))
                     {
@@ -52,7 +51,7 @@ namespace Comsec.SqlRestore.Services
                 }
                 else
                 {
-                    fullFileName = Path.Combine(ldfRestorePath, fileName).ToLower();
+                    fullFileName = Path.Combine(ldfRestorePath.FullName, fileName).ToLower();
 
                     if (!fullFileName.EndsWith(".ldf"))
                     {
@@ -77,9 +76,9 @@ namespace Comsec.SqlRestore.Services
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="backupFile">The backup file.</param>
-        /// <param name="dataFilesPath">The path to restore physical files to</param>
-        /// <param name="logFilesPath">The LDF file path.</param>
-        public void Restore(string server, BackupFile backupFile, string dataFilesPath, string logFilesPath = null)
+        /// <param name="mdfPath">The path to restore physical files to</param>
+        /// <param name="ldfPath">The LDF file path.</param>
+        public void Restore(string server, BackupFile backupFile, DirectoryInfo mdfPath, DirectoryInfo ldfPath = null)
         {
             var connectionString = $"Data Source={server};Integrated Security=SSPI;Initial Catalog=master;";
 
@@ -92,7 +91,7 @@ namespace Comsec.SqlRestore.Services
 
                 if (!connection.DatabaseExists(backupFile.DatabaseName))
                 {
-                    var sql = GenerateRestoreSql(backupFile, dataFilesPath, logFilesPath);
+                    var sql = GenerateRestoreSql(backupFile, mdfPath, ldfPath);
 
                     connection.Execute(sql, commandTimeout: 0);
                 }

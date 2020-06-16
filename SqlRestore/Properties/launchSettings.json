@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SqlRestore": {
+      "commandName": "Project",
+      "commandLineArgs": "restore localhost --src c:\\source --mdfPath c:\\temp --ldfPath c:\\log"
+    }
+  }
+}

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Comsec.SqlRestore.Domain;
 
-namespace Comsec.SqlRestore.Interfaces
+namespace Comsec.SqlRestore.Services
 {
     /// <summary>
     /// Service to interact with an SQL server.
@@ -14,9 +15,9 @@ namespace Comsec.SqlRestore.Interfaces
         /// </summary>
         /// <param name="server">The server.</param>
         /// <param name="backupFile">The backup file.</param>
-        /// <param name="dataFilesPath">The path to restore data files to</param>
-        /// <param name="logFilesPath">The path to restore log files to (optional: defaults to <see cref="dataFilesPath"/> when not set).</param>
-        void Restore(string server, BackupFile backupFile, string dataFilesPath, string logFilesPath = null);
+        /// <param name="mdfPath">The path to restore data files to</param>
+        /// <param name="ldfPath">The path to restore log files to (optional: defaults to <see cref="mdfPath"/> when not set).</param>
+        void Restore(string server, BackupFile backupFile, DirectoryInfo mdfPath, DirectoryInfo ldfPath = null);
 
         /// <summary>
         /// Gets the logical names from the backup file

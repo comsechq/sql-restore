@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Comsec.SqlRestore.Domain;
-using Comsec.SqlRestore.Interfaces;
 
 namespace Comsec.SqlRestore.Services
 {
@@ -17,29 +16,32 @@ namespace Comsec.SqlRestore.Services
         /// </summary>
         /// <param name="directory">The directory.</param>
         /// <returns></returns>
-        public IList<BackupFile> ParseDirectory(string directory)
+        public IList<BackupFile> ParseDirectory(DirectoryInfo directory)
         {
             var backupFileList = new List<BackupFile>();
-            var filePaths = Directory.GetFiles(directory, "*.bak");
+            var filePaths = Directory.GetFiles(directory.FullName, "*.bak");
            
             foreach (var file in filePaths)
             {
                 var fi = new FileInfo(file);
                 var l = fi.Name.IndexOf("_backup", StringComparison.Ordinal);
-                var dbName = fi.Name.Substring(0, l);
 
-                var item = new BackupFile
-                           {
-                               Created = fi.CreationTime,
-                               DatabaseName = dbName,
-                               FileName = fi.FullName,
-                               Length = fi.Length
-                           };
+                if (l >= 0)
+                {
+                    var dbName = fi.Name.Substring(0, l);
 
-                backupFileList.Add(item);
+                    var item = new BackupFile
+                    {
+                        Created = fi.CreationTime,
+                        DatabaseName = dbName,
+                        FileName = fi.FullName,
+                        Length = fi.Length
+                    };
+
+                    backupFileList.Add(item);
+                }
             }
             
-
             return backupFileList;
         }
 
