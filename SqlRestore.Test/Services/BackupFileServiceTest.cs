@@ -34,8 +34,8 @@ namespace dbBackupRestore.Test.Services
 
             var results = service.RemoveDuplicatesBySize(files);
 
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual(3, results[0].Length);
+            Assert.That(results.Count, Is.EqualTo(1));
+            Assert.That(results[0].Length, Is.EqualTo(3));
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace dbBackupRestore.Test.Services
 
             var results = service.RemoveDuplicatesBySize(files);
 
-            Assert.AreEqual(2, results.Count);
+            Assert.That(results.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -58,8 +58,8 @@ namespace dbBackupRestore.Test.Services
 
             var results = service.RemoveDuplicatesByDate(files);
 
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual(new DateTime(2001, 1, 2), results[0].Created);
+            Assert.That(results.Count, Is.EqualTo(1));
+            Assert.That(results[0].Created, Is.EqualTo(new DateTime(2001, 1, 2)));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace dbBackupRestore.Test.Services
 
             var results = service.RemoveDuplicatesByDate(files);
 
-            Assert.AreEqual(2, results.Count);
+            Assert.That(results.Count, Is.EqualTo(2));
         }
         
         [Test]
@@ -84,7 +84,7 @@ namespace dbBackupRestore.Test.Services
          
             var results = service.RemoveDuplicatesByDate(files);
 
-            Assert.AreEqual(2, results.Count);
+            Assert.That(results.Count, Is.EqualTo(2));
         }
     }
 }

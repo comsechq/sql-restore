@@ -18,13 +18,13 @@ namespace Comsec.SqlRestore.Services
                            DatabaseName = "comsec",
                            FileList = new List<FileListEntry>
                                       {
-                                          new FileListEntry
+                                          new()
                                           {
                                               LogicalName = "comsec",
                                               PhysicalName = @"D:\SQL\comsec.mdf",
                                               Type = "D"
                                           },
-                                          new FileListEntry
+                                          new()
                                           {
                                               LogicalName = "comsec_log",
                                               PhysicalName = @"L:\SQL\comsec_log.LDF",
@@ -39,10 +39,10 @@ namespace Comsec.SqlRestore.Services
                 file,
                 new DirectoryInfo(@"D:\SQL\"));
 
-            Assert.AreEqual(@"RESTORE DATABASE [comsec]
+            Assert.That(query, Is.EqualTo(@"RESTORE DATABASE [comsec]
 FROM DISK = 'comsec_backup_2014_06_19_010004_7953268' WITH REPLACE,
 MOVE 'comsec' TO 'd:\sql\comsec.mdf',
-MOVE 'comsec_log' TO 'd:\sql\comsec_log.ldf'", query);
+MOVE 'comsec_log' TO 'd:\sql\comsec_log.ldf'"));
         }
 
         [Test]
@@ -54,13 +54,13 @@ MOVE 'comsec_log' TO 'd:\sql\comsec_log.ldf'", query);
                            DatabaseName = "comsec",
                            FileList = new List<FileListEntry>
                                       {
-                                          new FileListEntry
+                                          new()
                                           {
                                               LogicalName = "comsec",
                                               PhysicalName = @"D:\SQL\comsec.mdf",
                                               Type = "D"
                                           },
-                                          new FileListEntry
+                                          new()
                                           {
                                               LogicalName = "comsec_log",
                                               PhysicalName = @"L:\SQL\comsec_log.LDF",
@@ -76,10 +76,10 @@ MOVE 'comsec_log' TO 'd:\sql\comsec_log.ldf'", query);
                 new DirectoryInfo(@"D:\SQL\"),
                 new DirectoryInfo(@"L:\SQL\"));
 
-            Assert.AreEqual(@"RESTORE DATABASE [comsec]
+            Assert.That(query, Is.EqualTo(@"RESTORE DATABASE [comsec]
 FROM DISK = 'comsec_backup_2014_06_19_010004_7953268' WITH REPLACE,
 MOVE 'comsec' TO 'd:\sql\comsec.mdf',
-MOVE 'comsec_log' TO 'l:\sql\comsec_log.ldf'", query);
+MOVE 'comsec_log' TO 'l:\sql\comsec_log.ldf'"));
         }
     }
 }

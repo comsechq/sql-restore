@@ -1,4 +1,6 @@
 ﻿using System;
+using System.CommandLine;
+using System.CommandLine.Binding;
 using System.IO;
 using System.Linq;
 using Comsec.SqlRestore.Services;
@@ -39,6 +41,32 @@ namespace Comsec.SqlRestore.Commands
             public DirectoryInfo MdfRestorePath { get; set; }
 
             public DirectoryInfo LdfRestorePath { get; set; }
+        }
+
+        public class InputBinder : BinderBase<Input>
+        {
+            private readonly Argument<string> serverArgument;
+            private readonly Option<DirectoryInfo> srcOption;
+            private readonly Option<DirectoryInfo> mdfOption;
+            private readonly Option<DirectoryInfo> ldfOption;
+
+            public InputBinder(Argument<string> serverArgument, Option<DirectoryInfo> srcOption, Option<DirectoryInfo> mdfOption, Option<DirectoryInfo> ldfOption)
+            {
+                this.serverArgument = serverArgument;
+                this.srcOption = srcOption;
+                this.mdfOption = mdfOption;
+                this.ldfOption = ldfOption;
+            }
+        
+            protected override Input GetBoundValue(BindingContext bindingContext)
+            {
+                return new Input(
+                    bindingContext.ParseResult.GetValueForArgument(this.serverArgument),
+                    bindingContext.ParseResult.GetValueForOption(this.srcOption),
+                    bindingContext.ParseResult.GetValueForOption(this.mdfOption),
+                    bindingContext.ParseResult.GetValueForOption(this.ldfOption)
+                );
+            }
         }
 
         /// <summary>

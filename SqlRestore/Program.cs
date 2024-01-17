@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Builder;
-using System.CommandLine.Invocation;
+using System.CommandLine.Parsing;
 using System.IO;
 using Comsec.SqlRestore.Commands;
 using Comsec.SqlRestore.Services;
@@ -15,32 +15,34 @@ namespace Comsec.SqlRestore
 
             var restoreCommand = new Command("restore", "CLI utility to restore a directory of backup files to an instance of Microsoft SQL Server.");
 
-            restoreCommand.AddArgument(
-                new Argument<string>(
-                    "server",
-                    "The host name of the SQL server. Trusted authentication will be used."));
-            
-            restoreCommand.AddOption(
-                new Option<DirectoryInfo>(
-                        "--src",
-                        "The source directory where the backup files are located.")
-                    {Required = true});
+            var serverArgument = new Argument<string>(
+                "server",
+                "The host name of the SQL server. Trusted authentication will be used.");
 
-            restoreCommand.AddOption(
-                new Option<DirectoryInfo>(
-                        "--mdfPath",
-                        "The destination directory to restore the data (.mdf) files to.")
-                    {Required = true});
+            restoreCommand.AddArgument(serverArgument);
 
-            restoreCommand.AddOption(
-                new Option<DirectoryInfo>(
-                        "--ldfPath",
-                        "The destination directory to restore the log (.ldf) files to.")
-                    {Required = true}
-            );
+            var srcOption = new Option<DirectoryInfo>(
+                    "--src",
+                    "The source directory where the backup files are located.")
+                {IsRequired = true};
 
-            restoreCommand.Handler =
-                CommandHandler.Create<RestoreCommand.Input>(input =>
+            restoreCommand.AddOption(srcOption);
+
+            var mdfOption = new Option<DirectoryInfo>(
+                    "--mdfPath",
+                    "The destination directory to restore the data (.mdf) files to.")
+                {IsRequired = true};
+
+            restoreCommand.AddOption(mdfOption);
+
+            var ldfOption = new Option<DirectoryInfo>(
+                    "--ldfPath",
+                    "The destination directory to restore the log (.ldf) files to.")
+                {IsRequired = true};
+
+            restoreCommand.AddOption(ldfOption);
+
+            restoreCommand.SetHandler((input) =>
                 {
                     var backupFileService = new BackupFileService();
                     var sqlService = new SqlService();
@@ -48,17 +50,15 @@ namespace Comsec.SqlRestore
                     var command = new RestoreCommand(backupFileService, sqlService);
 
                     command.Execute(input);
-                });
+                },
+                new RestoreCommand.InputBinder(serverArgument, srcOption, mdfOption, ldfOption));
 
             rootCommand.Add(restoreCommand);
 
-            var builder = new CommandLineBuilder(rootCommand);
+            var builder = new CommandLineBuilder(rootCommand).UseDefaults()
+                                                             .Build();
 
-            builder.UseDefaults()
-                   .Build();
-
-            return rootCommand.InvokeAsync(args)
-                              .Result;
+            return builder.Invoke(args);
         }
     }
 }

@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Comsec.SqlRestore</RootNamespace>
     <AssemblyName>sqlrest</AssemblyName>
     <OutputType>Exe</OutputType>
-    <Version>0.3.0.1</Version>
+    <Version>0.3.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="comsec.sugar" Version="2.0.121" />
-    <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20303.1" />
+    <PackageReference Include="comsec.sugar" Version="2.0.126" />
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
   
